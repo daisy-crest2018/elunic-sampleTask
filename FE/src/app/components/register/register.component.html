@@ -1,0 +1,100 @@
+<form id="user-form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <label for="username">Username<span>*</span></label>
+    <input type="text" id="username" formControlName="username" />
+    <div
+      *ngIf="
+        registrationForm.get('username')?.invalid &&
+        registrationForm.get('username')?.touched
+      "
+    >
+      <div *ngIf="registrationForm.get('username')?.errors?.required">
+        Username is required.
+      </div>
+      <div *ngIf="registrationForm.get('username')?.errors?.maxlength">
+        Username cannot exceed 24 characters.
+      </div>
+      <div
+        *ngIf="
+          registrationForm.get('username')?.errors?.invalidUsername ||
+          registrationForm.get('username')?.errors?.minlength
+        "
+      >
+        Username must be at least 3 characters long, must not contain space,
+        special characters, shouldn't start or end with an underscore or dot(.)
+      </div>
+    </div>
+  
+    <label for="email">Email<span>*</span></label>
+    <input type="email" id="email" formControlName="email" />
+    <div
+      *ngIf="
+        registrationForm.get('email')?.invalid &&
+        registrationForm.get('email')?.touched
+      "
+    >
+      <div *ngIf="registrationForm.get('email')?.errors?.required">
+        Email is required.
+      </div>
+      <div
+        *ngIf="
+          registrationForm.get('email')?.errors?.email ||
+          registrationForm.get('email')?.errors?.invalidEmail
+        "
+      >
+        Please enter a valid email address.
+      </div>
+    </div>
+  
+    <label for="type">Type<span>*</span></label>
+    <select id="type" formControlName="type">
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+    </select>
+    <div
+      *ngIf="
+        registrationForm.get('type')?.invalid &&
+        registrationForm.get('type')?.touched
+      "
+    >
+      Type is required.
+    </div>
+  
+    <label for="password">Password<span>*</span></label>
+    <input id="password" type="password" formControlName="password" />
+    <div
+      *ngIf="
+        registrationForm.get('password')?.invalid &&
+        registrationForm.get('password')?.touched
+      "
+    >
+      <div *ngIf="registrationForm.get('password')?.errors?.required">
+        Password is required.
+      </div>
+      <div *ngIf="registrationForm.get('password')?.errors?.maxlength">
+        Password cannot exceed 24 characters.
+      </div>
+      <div
+        *ngIf="
+          registrationForm.get('password')?.errors?.invalidPassword ||
+          registrationForm.get('password')?.errors?.minlength
+        "
+      >
+        Password must be 5-24 characters long, and include at least one uppercase
+        letter, one lowercase letter, and one special character.
+      </div>
+    </div>
+
+    <div class="acknowledgement-message" *ngIf="message" 
+     [ngClass]="{ 'success-message': message === 'User registered successfully', 
+                  'failure-message': message !== 'User registered successfully' }">
+    {{ message }}
+    </div>
+  
+    <button type="submit" [disabled]="registrationForm?.invalid || isSubmitting">
+      Register
+    </button>
+
+    <button type="submit" routerLink="/login">
+        Login
+    </button>
+  </form>
